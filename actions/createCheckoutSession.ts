@@ -35,7 +35,7 @@ export async function createCheckoutSession (items : any, metadata: Metadata) {
             invoice_creation: {
                 enabled: true
             },
-            success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSON_IS}&orderNumber=${metadata?.orderNumber}`,
+            success_url: `/success?session_id={CHECKOUT_SESSON_IS}&orderNumber=${metadata?.orderNumber}`,
             cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
             line_items: items?.map((item: any) => ({
                 price_data: {
