@@ -63,4 +63,7 @@ function AccordionContent({
   )
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion };
+export { AccordionItem };
+export { AccordionTrigger };
+export { AccordionContent };

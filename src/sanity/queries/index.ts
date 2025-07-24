@@ -67,7 +67,7 @@ const getSlugProducts = async (slug: string) => {
         slug
       }
     })
-    return data ?? []
+    return data ?? null
   }catch (error){
     console.log("Error fecthing slug products", error)
     return []
@@ -108,14 +108,12 @@ const getSingleBlog = async (slug: string) => {
   try{
     const {data} = await sanityFetch({
       query: SINGLE_BLOG_QUERY,
-      params: {
-        slug
-      }
+      params: { slug }
     })
-    return data 
+    return data ?? null
   }catch (error){
     console.log("Error fecthing Orders", error)
-    return []
+    return null
   }
 }
 
@@ -144,6 +142,13 @@ const getOthersBlog = async (slug: string, quantity: number) => {
   }
 };
 
-
-
-export {getCategories, getBrands, getLatestBlog, getDealProducts, getSlugProducts, getSlugBrandName, getOrdersData, getSingleBlog, getBlogCategories, getOthersBlog}
+export { getCategories };
+export { getBrands };
+export { getLatestBlog };
+export { getDealProducts };
+export { getSlugProducts };
+export { getSlugBrandName };
+export { getOrdersData };
+export { getSingleBlog };
+export { getBlogCategories };
+export { getOthersBlog };

@@ -14,7 +14,7 @@ type Props = {
   showProduct?: boolean
 }
 
-function FavoriteButton({product, divClassName, iconClassName, spanClassName, showProduct = false}: Props) {
+function FavoriteButton({ divClassName, iconClassName, spanClassName, showProduct = false}: Props) {
   const {favoriteProduct} = useStore()
   return (
     <div className={cn('group relative cursor-pointer ext-lightColor font-semibold', divClassName)}>

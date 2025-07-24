@@ -1,7 +1,12 @@
 import Container from "@/components/Container";
 import { Title } from "@/components/ui/text";
+import { BLOG_CATEGORIESResult, SINGLE_BLOG_QUERYResult } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import { getSingleBlog, getBlogCategories, getOthersBlog } from "@/sanity/queries";
+import {
+  getBlogCategories,
+  getOthersBlog,
+  getSingleBlog,
+} from "@/sanity/queries";
 import dayjs from "dayjs";
 import { Calendar, ChevronLeftIcon, Pencil } from "lucide-react";
 import { PortableText } from "next-sanity";
@@ -16,7 +21,8 @@ const SingleBlogPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const blog = await getSingleBlog(slug);
+  const blog: SINGLE_BLOG_QUERYResult | null = await getSingleBlog(slug);
+  console.log(blog)
   if (!blog) return notFound();
 
   return (
@@ -36,12 +42,12 @@ const SingleBlogPage = async ({
             <div className="text-xs flex items-center gap-5 my-7">
               <div className="flex items-center relative group cursor-pointer">
                 {blog?.blogcategories?.map(
-                  (item: { title: string }, index: number) => (
+                  (item: { title: string | null; slug: string | null }, index: number) => (
                     <p
                       key={index}
                       className="font-semibold text-shop_dark_green tracking-wider"
                     >
-                      {item?.title} 
+                      {item?.title ?? "Untitled"}
                     </p>
                   )
                 )}
@@ -187,7 +193,7 @@ const SingleBlogPage = async ({
 };
 
 const BlogLeft = async ({ slug }: { slug: string }) => {
-  const categories = await getBlogCategories();
+  const categories: BLOG_CATEGORIESResult = await getBlogCategories();
   const blogs = await getOthersBlog(slug, 5);
 
   return (
@@ -200,7 +206,7 @@ const BlogLeft = async ({ slug }: { slug: string }) => {
               key={index}
               className="text-lightColor flex items-center justify-between text-sm font-medium"
             >
-              <p>{blogcategories[0]?.title}</p>
+              <p>{blogcategories?.[0]?.title ?? "Untitled"}</p>
               <p className="text-darkColor font-semibold">{`(1)`}</p>
             </div>
           ))}

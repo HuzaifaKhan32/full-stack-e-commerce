@@ -67,7 +67,7 @@ export const addressType = defineType({
         name: "createdAt",
         title: "Created At",
         type: "datetime",
-        initialValue: () => new Date().toISOString
+        initialValue: () => new Date().toISOString()
     }),],
     preview: {
         select: {

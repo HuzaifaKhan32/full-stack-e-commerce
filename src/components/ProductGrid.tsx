@@ -18,8 +18,8 @@ function ProductGrid() {
   const query = `*[_type == "product" && variant == $variant] | order(name desc){
     ...,"categories":categories[]->title
   }`;
-  const params = { variant: selectdTab.toLowerCase() };
   useEffect(() => {
+    const params = { variant: selectdTab.toLowerCase() };
     setLoading(true);
     const fetchData = async () => {
       try {
@@ -32,7 +32,7 @@ function ProductGrid() {
       }
     };
     fetchData();
-  }, [selectdTab]);
+  }, [selectdTab, query]);
   return (
       <div className="py-10">
         <HomeTabBar selectedTab={selectdTab} onTabSelect={setSelectedTab} />

@@ -231,11 +231,9 @@ function CarouselNext({
   )
 }
 
-export {
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-}
+export { type CarouselApi };
+export { Carousel };
+export { CarouselContent };
+export { CarouselItem };
+export { CarouselPrevious };
+export { CarouselNext };

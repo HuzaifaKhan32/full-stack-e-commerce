@@ -6,19 +6,36 @@ import PriceView from './PriceView'
 import AddToCartButton from './AddToCartButton'
 import ProductCharacteristics from './ProductCharacteristics'
 import AddToWhishList from './AddToWhishList'
+import { Product, PRODUCT_BY_SLUG_QUERYResult } from '../../sanity.types'
+import NoProductAvailable from './NoProductAvailable'
 
+
+
+function normalizeSlugProduct(product: PRODUCT_BY_SLUG_QUERYResult): Product | null {
+  if (!product || Array.isArray(product)) return null;
+  return {
+    ...product
+  };
+}
 
 async function SingleProductPage({params}: {params: Promise<{slug: string}>}) {
     const {slug} = await params
-    const slugProducts = await getSlugProducts(slug)
-    const isStock = slugProducts?.stock > 0
+    let rawProduct = await getSlugProducts(slug);
+    if (Array.isArray(rawProduct)) {
+      rawProduct = rawProduct[0] ?? null;
+    }
+    const product: Product | null = normalizeSlugProduct(rawProduct);
+    if(!product){
+      return <><NoProductAvailable /></>
+    }
+    const isStock = (typeof product.stock === 'number' ? product.stock : 0) > 0;
   return (
     <div className='flex flex-col md:flex-row gap-10 pb-10'>
-            {slugProducts?.images && <ImageView images={slugProducts?.images} isStock={isStock}/>}  
+            {product.images && <ImageView images={product.images} isStock={isStock}/>}  
         <div className='w-full md:w-1/2 flex flex-col gap-5'>
           <div className='space-y-1'>
-            <h2 className='text-2xl font-bold'>{slugProducts?.name}</h2>
-            <p className='text-sm text-gray-600 tracking-wide'>{slugProducts?.description}</p>
+            <h2 className='text-2xl font-bold'>{product.name}</h2>
+            <p className='text-sm text-gray-600 tracking-wide'>{product.description}</p>
             <div className='flex items-center gap-0.5'>
               {[...Array(5)].map((_, index) => (
                 <StarIcon
@@ -32,14 +49,14 @@ async function SingleProductPage({params}: {params: Promise<{slug: string}>}) {
             </div>
           </div>
           <div className='space-y-2 border-t border-b border-gray-200 py-4'>
-            <PriceView price={slugProducts?.price} discount={slugProducts?.discount} className='text-lg font-bold'/>
-            <p className={`inline-block text-center text-sm font-semibold ${(slugProducts?.stock as number) == 0 ? "bg-red-100 text-bg-red-600" : "text-green-600 bg-green-100"} px-4 py-2 rounded-lg`}>{(slugProducts?.stock as number) == 0 ? "Out of stock" : "In Stock"}</p>
+            <PriceView price={product.price} discount={product.discount} className='text-lg font-bold'/>
+            <p className={`inline-block text-center text-sm font-semibold ${(typeof product.stock === 'number' && product.stock === 0) ? "bg-red-100 text-bg-red-600" : "text-green-600 bg-green-100"} px-4 py-2 rounded-lg`}>{(typeof product.stock === 'number' && product.stock === 0) ? "Out of stock" : "In Stock"}</p>
           </div>
           <div className='flex justify-between gap-2 lg:gap-5'>
-              <AddToCartButton product={slugProducts} className='w-full flex'/>
-              <AddToWhishList product={slugProducts} showProduct={true} className='static'/>
+              <AddToCartButton product={product} className='w-full flex'/>
+              <AddToWhishList product={product} showProduct={true} className='static'/>
           </div>
-          <ProductCharacteristics product={slugProducts}/>
+          <ProductCharacteristics product={product}/>
           <div className='flex items-center justify-between flex-wrap text-sm border-t border-b border-gray-200 py-4'>
             <div className='flex items-center gap-2 hover:text-red-600 cursor-pointer hoverEffect'>
               <SquareSplitVertical />

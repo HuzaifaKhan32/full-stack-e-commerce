@@ -104,13 +104,11 @@ function TableCaption({
   )
 }
 
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
-}
+export { Table };
+export { TableHeader };
+export { TableBody };
+export { TableFooter };
+export { TableHead };
+export { TableRow };
+export { TableCell };
+export { TableCaption };
